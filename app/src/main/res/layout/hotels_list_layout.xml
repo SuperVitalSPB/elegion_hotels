@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:showIn="@layout/activity_main"
+        tools:context="ru.supervital.elegion.hotels.HotelsListFragment">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/lblSort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/sSort"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:id="@+id/lblSortDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sSortDistance"
+                            android:textAlignment="gravity"
+                            android:layout_marginRight="10dp"
+                            android:textSize="16sp" />
+                    <ImageView
+                            android:id="@+id/imgSortDistance"
+                            android:layout_width="16sp"
+                            android:layout_height="16sp"
+                            android:visibility="gone"
+                            android:layout_marginTop="6sp"
+                            android:src="@drawable/sort_up" />
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:id="@+id/lblSortFreeNum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sFreeNum"
+                            android:textAlignment="gravity"
+                            android:layout_marginRight="10dp"
+                            android:textSize="16sp" />
+                    <ImageView
+                            android:id="@+id/imgSortFreeNum"
+                            android:layout_width="16sp"
+                            android:layout_height="16sp"
+                            android:visibility="gone"
+                            android:layout_marginTop="6sp"
+                            android:src="@drawable/sort_up" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="4sp"
+                android:src="@color/colorPrimary" />
+        <ListView
+                android:id="@+id/lvMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</RelativeLayout>

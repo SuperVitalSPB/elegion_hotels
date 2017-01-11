@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Отели E-Legion</string>
+    <string name="sAddress">Адрес:</string>
+    <string name="sSuites_availability">Свободно:</string>
+    <string name="sDistance">От центра:</string>
+    <string name="sOnMap">На карте</string>
+    <string name="sSort">Сортировка:</string>
+    <string name="sSortDistance">От центра</string>
+    <string name="sFreeNum">Свободные номера</string>
+    <string name="title_activity_hotel">Описание отеля</string>
+    <string name="sLoadHList">Загрузка списка отелей....</string>
+    <string name="sLoadHInfo">Загрузка инфо о отеле....</string>
+    <string name="sLoadHImage">Загрузка изображения....</string>
+    <string name="sNoImage">Нет изображения</string>
+    <string name="title_activity_maps">Отель на карте</string>
+    <string name="sCoordinats">Координаты:</string>
+    <string name="sLat">lat:</string>
+    <string name="sLon">lon:</string>
+
+
+    <!--
+        <string name=""></string>
+        <string name=""></string>
+    -->
+
+</resources>
