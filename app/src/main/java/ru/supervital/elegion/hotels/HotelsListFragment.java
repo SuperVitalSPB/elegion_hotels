@@ -91,9 +91,11 @@ public class HotelsListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!mOldSort) { // если false, оставляем как есть, тип сортировки на противоположный
-                // если нажали на label или на картинку, то показать соответствующую кртинку
-                imgSortDistance.setVisibility((v.getId() == R.id.lblSortDistance || v.getId() == R.id.imgSortDistance)? View.VISIBLE : View.INVISIBLE);
-                imgSortFreeNum.setVisibility((v.getId() == R.id.lblSortFreeNum || v.getId() == R.id.imgSortFreeNum) ? View.VISIBLE : View.INVISIBLE);
+                // если нажали на label или на картинку, то показать соответствующую картинку
+                imgSortDistance.setVisibility((v.getId() == R.id.lblSortDistance || v.getId() == R.id.imgSortDistance)?
+                        View.VISIBLE : View.INVISIBLE);
+                imgSortFreeNum.setVisibility((v.getId() == R.id.lblSortFreeNum || v.getId() == R.id.imgSortFreeNum) ?
+                        View.VISIBLE : View.INVISIBLE);
                 lblSort.setTypeface(null, Typeface.BOLD);
                 // рисуем картинку типа сортировки
                 // меняем значение типа сортирвки на противоположное
@@ -129,9 +131,11 @@ public class HotelsListFragment extends Fragment {
                     int res = 0;
                     if (controlSort.getId() == R.id.lblSortDistance || controlSort.getId() == R.id.imgSortDistance) {
                         res = Double.valueOf(o1.distance).compareTo(o2.distance) * (mTypeSortDistance == 1 ? 1 : -1);
-                    } else if (controlSort.getId() == R.id.lblSortFreeNum || controlSort.getId() == R.id.imgSortFreeNum) {
+                    }
+                    else if (controlSort.getId() == R.id.lblSortFreeNum || controlSort.getId() == R.id.imgSortFreeNum)
+                    {
                         res = Double.valueOf(Double.valueOf(o1.getSuites_availability())).
-                                compareTo(Double.valueOf(o2.getSuites_availability())) * (mTypeSortFreeNum == 1 ? 1 : -1);
+                           compareTo(Double.valueOf(o2.getSuites_availability())) * (mTypeSortFreeNum == 1 ? 1 : -1);
                     }
                     mOldSort = false;
                     return res;

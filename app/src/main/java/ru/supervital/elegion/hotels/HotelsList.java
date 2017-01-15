@@ -48,7 +48,6 @@ public class HotelsList extends SendURL {
         }
     }
 
-
     /**
      * после выполнения
      */
