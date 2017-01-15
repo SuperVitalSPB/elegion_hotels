@@ -77,5 +77,7 @@ public class HotelEx extends Hotel {
         distance = hotel.distance;
         lat = hotel.lat;
         lon = hotel.lon;
+        bitmap_image = hotel.bitmap_image;
+        LoadEx = true;
     }
 }

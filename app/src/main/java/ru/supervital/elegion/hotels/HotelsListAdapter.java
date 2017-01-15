@@ -1,6 +1,7 @@
 package ru.supervital.elegion.hotels;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,23 @@ public class HotelsListAdapter extends BaseAdapter {
         int aRes= 0;
         if (hotels!=null) aRes = hotels.size();
         return aRes;
+    }
+
+    public Hotel getItemById(Long id){
+        Hotel res = null;
+
+        for (Hotel hotel :hotels)
+            if (hotel.id.equals(id)) {
+                res = hotel;
+                break;
+            }
+        return res;
+    }
+
+    // загружена ли в отель доп.инфо
+    public boolean isHotelEx(Long id){
+        Hotel hotel = (Hotel) getItemById(id);
+        return hotel != null && hotel.LoadEx;
     }
 
     // элемент по позиции

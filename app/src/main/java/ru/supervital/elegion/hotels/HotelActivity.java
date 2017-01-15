@@ -10,15 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 public class HotelActivity extends AppCompatActivity {
     private final static String TAG = "elegion.HotelActivity";
     public static String HOTEL_ID = "hotel_id";
+
+    ApplicationELegionHotels myAppl;
 
     public final static int LOAD_HOTEL_INFO  = 10;
     public final static int LOAD_HOTEL_IMAGE = 20;
@@ -30,14 +33,20 @@ public class HotelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myAppl = (ApplicationELegionHotels) getApplication();
+
         setContentView(R.layout.activity_hotel);
         InitView();
 
         Long hotel_id = getIntent().getExtras().getLong(HOTEL_ID);
 
-        mainHotel.mActivity = this;
-        mainHotel.ivImage = ivImage;
-        mainHotel.LoadData(hotel_id);
+        if (!myAppl.mt.mAdapter.isHotelEx(hotel_id)) {
+            mainHotel.ivImage = ivImage;
+            mainHotel.LoadData(hotel_id);
+        } else {
+            mainHotel.setMainValues(myAppl.mt.mAdapter.getItemById(hotel_id));
+            LoadDataInView(mainHotel);
+        }
     }
 
     @Override
@@ -57,11 +66,35 @@ public class HotelActivity extends AppCompatActivity {
         return progress;
     }
 
-    public void onPostExecute(final Boolean success, Hotel hotel) {
+    public void onPostExecute(final Boolean success, HotelEx hotel) {
         if (!success)
                     return;
         LoadImage();
+        LoadDataInApp(hotel);
         LoadDataInView(hotel);
+    }
+
+    public void LoadImageInApp(Hotel hotel) {
+        Hotel aHotel = myAppl.mt.mAdapter.getItemById(hotel.id);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        hotel.bitmap_image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        InputStream is = new ByteArrayInputStream(stream.toByteArray());
+        aHotel.bitmap_image = BitmapFactory.decodeStream(is);
+    }
+
+    public void LoadDataInApp(Hotel hotel){
+        Hotel aHotel = myAppl.mt.mAdapter.getItemById(hotel.id);
+            aHotel.id = hotel.id;
+            aHotel.name = hotel.name;
+            aHotel.address = hotel.address;
+            aHotel.stars = hotel.stars;
+            aHotel.suites_availability = hotel.suites_availability;
+            aHotel.image = hotel.image;
+            aHotel.distance = hotel.distance;
+            aHotel.lat = hotel.lat;
+            aHotel.lon = hotel.lon;
+            aHotel.LoadEx = true;
     }
 
     public void LoadDataInView(Hotel hotel){
@@ -81,6 +114,11 @@ public class HotelActivity extends AppCompatActivity {
         //--
         ((TextView) findViewById(R.id.tvlat)).setText(hotel.lat.toString());
         ((TextView) findViewById(R.id.tvlon)).setText(hotel.lon.toString());
+        //---
+        if (hotel.bitmap_image==null)
+                ((TextView) findViewById(R.id.tvNoImage)).setVisibility(View.VISIBLE);
+            else
+                ((ImageView) findViewById(R.id.ivImage)).setImageBitmap(hotel.bitmap_image);
 
     }
 
@@ -92,6 +130,7 @@ public class HotelActivity extends AppCompatActivity {
 
     void LoadImage(){
         ivImage = (ImageView) findViewById(R.id.ivImage);
+
         String sStr = Hotel.URL_img;
         sStr = sStr.replace("${pict_id}", mainHotel.image);
         Log.d(TAG, sStr);
@@ -136,13 +175,14 @@ public class HotelActivity extends AppCompatActivity {
             super.onPostExecute(result);
             ShowDialog(false);
 
-            if (result==null) {
-                ((TextView) findViewById(R.id.tvNoImage)).setVisibility(View.VISIBLE);
-                return;
+            if (result!=null) {
+                result.setDensity(Bitmap.DENSITY_NONE);
+                result = Bitmap.createBitmap(result, 1, 1, result.getWidth() - 2, result.getHeight() - 2);
+                bmImage.setImageBitmap(result);
+                mainHotel.bitmap_image = result;
+                LoadImageInApp(mainHotel);
             }
-            result.setDensity(Bitmap.DENSITY_NONE);
-            result = Bitmap.createBitmap(result, 1, 1, result.getWidth()-2, result.getHeight()-2);
-            bmImage.setImageBitmap(result);
+            ((TextView) findViewById(R.id.tvNoImage)).setVisibility(result==null ? View.VISIBLE: View.INVISIBLE);
         }
 
         @Override

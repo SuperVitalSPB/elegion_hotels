@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
@@ -17,8 +18,8 @@ import java.util.Comparator;
 
 public class HotelsListFragment extends Fragment {
     private final static String TAG = "elegion.HotelsListFragm";
-    final String URL_main  = "https://dl.dropboxusercontent.com/u/1875854/1/0777.json"; // список отелей
-    // “suites_availability” содержит в себе номера доступных комнат отеля разделённых двоеточием.
+
+    ApplicationELegionHotels myAppl;
 
     TextView lblSort,
              lblSortDistance,
@@ -26,9 +27,7 @@ public class HotelsListFragment extends Fragment {
     ImageView imgSortDistance,
               imgSortFreeNum;
 
-    public HotelsList mt;
     ListView lvMain;
-    MainActivity mActivity;
 
     public HotelsListFragment() {
     }
@@ -38,15 +37,10 @@ public class HotelsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.hotels_list_layout, container, false);
         InitView(rootView);
-        return rootView;
-    }
 
-    void ResetLabelSort(){
-        lblSort.setTypeface(null, Typeface.NORMAL);
-        lblSortDistance.setTypeface(null, Typeface.NORMAL);
-        lblSortFreeNum.setTypeface(null, Typeface.NORMAL);
-        imgSortDistance.setVisibility(View.INVISIBLE);
-        imgSortFreeNum.setVisibility(View.INVISIBLE);
+        myAppl = (ApplicationELegionHotels) getActivity().getApplication();
+
+        return rootView;
     }
 
     void InitView(View rootView){
@@ -128,7 +122,7 @@ public class HotelsListFragment extends Fragment {
 
             controlSort = v; // контрол по которому кликнули
 
-            Collections.sort(mt.hotelArrayList, new Comparator<Hotel>() {
+            Collections.sort(myAppl.mt.hotelArrayList, new Comparator<Hotel>() {
                 @Override
                 public int compare(Hotel o1, Hotel o2) {
 
@@ -143,47 +137,41 @@ public class HotelsListFragment extends Fragment {
                     return res;
                 }
             });
-            mt.mAdapter.notifyDataSetChanged();
+            myAppl.mt.mAdapter.notifyDataSetChanged();
         }
     };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActivity = (MainActivity) getActivity();
-        mActivity.fraHotelsList = this;
+        ((MainActivity) getActivity()).fraHotelsList = this;
         LoadHotelsList();
     }
 
     public void RefreshHotelsList(){
-        if (mt!=null)
-            mt.hotelArrayList.clear();
+        if (myAppl.mt!=null)
+            myAppl.mt.hotelArrayList.clear();
         mOldSort = true;
         LoadHotelsList();
-    }
-
-    public Boolean aResult = false;
-    void LoadHotelsList() {
-        if (mt==null || mt.hotelArrayList.size()==0) {
-            //ResetLabelSort();
-            mOldSort = true;
-            mt = new HotelsList(URL_main, null, aResult);
-            mt.mActivity = mActivity;
-            mt.lvMain = lvMain;
-            mt.controlSort = controlSort;
-            mt.execute(mt.mUrl);
-        }
     }
 
     AdapterView.OnItemClickListener mlvMain_OnItemClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view,
         int position, long id) {
             Log.d(TAG, "itemClick: position = " + position + ", id = " + id);
-            Intent intent = new Intent(mActivity, HotelActivity.class)
+            Intent intent = new Intent(getActivity(), HotelActivity.class)
                 .putExtra(HotelActivity.HOTEL_ID, id);
             startActivity(intent);
         }
     };
+
+    public void LoadHotelsList() {
+        mOldSort = true;
+        myAppl.mt_mActivity = (AppCompatActivity) getActivity();
+        myAppl.mt_lvMain = lvMain;
+        myAppl.mt_controlSort = controlSort;
+        myAppl.LoadHotelsList();
+    }
 
     void onPostExecute(){
         mOldSort = false;

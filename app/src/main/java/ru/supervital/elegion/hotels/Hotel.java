@@ -1,5 +1,6 @@
 package ru.supervital.elegion.hotels;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.*;
@@ -10,12 +11,14 @@ public class Hotel {
     final static String URL_hotel = "https://dl.dropboxusercontent.com/u/1875854/1/${hotel_id}.json",    // ID отеля.
                         URL_img  = "https://dl.dropboxusercontent.com/u/1875854/1/${pict_id}";           // ID картинки.
 
-    int id;
+    boolean LoadEx = false; // признак того, что в Отель загрузили доп.инфу
+    Long id;
     String name,
            address,
            stars,
            suites_availability,
            image;
+    Bitmap bitmap_image;
 
     Double distance,
            lat,
@@ -27,8 +30,8 @@ public class Hotel {
         super();
     }
 
-    public Hotel(Integer id, String name, String address, String stars, String suites_availability, String image,
-                 double distance, double lat, double lon) {
+    public Hotel(Long id, String name, String address, String stars, String suites_availability, String image,
+                 double distance, double lat, double lon, boolean LoadEx) {
         super();
         this.id = id;
         this.name = name;
@@ -40,6 +43,7 @@ public class Hotel {
         this.distance = distance;
         this.lat = lat;
         this.lon = lon;
+        this.LoadEx = LoadEx;
     }
 
     public int getSuites_availability() {
